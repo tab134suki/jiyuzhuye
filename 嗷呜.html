@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>嗷呜！高考倒计时</title>
+<script>
+// 设置高考日期为明年的6月7日
+var targetDate = new Date(new Date().getFullYear() + 1, 5, 7); // 注意月份是从0开始的，所以5代表6月
+
+function updateCountdown() {
+    var now = new Date();
+    var distance = targetDate - now;
+    // 定义映射表
+    const mapping = {
+        00: '嗷-嗷', 01: '嗷/嗷', 02: '嗷', 03: '嗷+嗷/嗷', 04: '嗷*嗷', 05: '呜',
+        06: '呜+嗷-嗷/嗷', 07: '呜+嗷', 08: '嗷^（嗷+嗷/嗷）', 09: '呜+嗷*嗷', 10: '呜*嗷', 11: '呜+嗷^嗷+嗷',
+        12: '呜*嗷+嗷', 13: '呜+嗷^嗷+嗷+嗷', 14: '嗷（呜+嗷）', 15: '呜+呜+呜', 16: '嗷（嗷^（嗷+嗷/嗷））', 17: '呜+呜+呜+嗷',
+        18: '嗷*（呜+嗷-嗷/嗷）', 19: '（嗷+嗷/嗷）（呜+嗷）-嗷', 20: '嗷（嗷-嗷）', 21: '（嗷+嗷/嗷）（呜+嗷）', 22: '嗷嗷', 23: '呜^嗷-嗷',
+        24: '嗷（嗷-嗷）+嗷^嗷', 25: '呜^嗷', 26: '嗷嗷-嗷*嗷', 27: '呜^嗷+嗷', 28: '嗷（嗷-嗷）+嗷^（嗷+嗷/嗷）', 29: '呜^嗷+嗷*嗷',
+        30: '嗷嗷+嗷^（嗷+嗷/嗷）', 31: '呜^嗷+呜+嗷-嗷/嗷', 32: '嗷^呜', 33: '（呜+嗷）呜-嗷', 34: '嗷^呜-嗷', 35: '（呜+嗷）呜',
+        36: '嗷*嗷*嗷^（嗷+嗷/嗷）', 37: '（呜+嗷）呜+嗷', 38: '（嗷*嗷）呜*嗷-嗷', 39: '（呜+嗷）呜+嗷*嗷', 40: '（嗷*嗷）呜*嗷', 41: '（呜+嗷）呜+嗷*（嗷/嗷+嗷）',
+        42: '嗷嗷*嗷-嗷', 43: '嗷嗷*嗷-嗷/嗷', 44: '嗷嗷*嗷', 45: '呜*（呜+嗷*嗷）', 46: '嗷嗷*嗷+嗷', 47: '（呜+嗷）^嗷-嗷',
+        48: '嗷呜*嗷-嗷', 49: '（呜+嗷）^嗷', 50: '嗷呜*嗷', 51: '呜嗷-嗷/嗷', 52: '呜嗷', 53: '（呜+嗷）^嗷+嗷*嗷',
+        54: '呜嗷+嗷', 55: '呜呜', 56: '呜嗷+嗷*嗷', 57: '呜呜+嗷', 58: '呜^嗷*嗷+嗷^（嗷+嗷/嗷）', 59: '呜呜+嗷*嗷'
+    };
+     // 计算剩余时间
+    var formattedDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var formattedHours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var formattedMinutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var formattedSeconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // 使用函数来格式化时间
+    
+   
+        
+     formattedDays = formattedDays.toString();
+    
+
+    if (formattedDays.length === 2) {
+        // 如果是两位数，直接使用
+        var firstPart = formattedDays.slice(0, 1);
+        var secondPart = formattedDays.slice(1, 2);
+    }else if (formattedDays.length === 3) {
+        // 如果是两位数，直接使用
+        var firstPart = formattedDays.slice(0, 2);
+        var secondPart = formattedDays.slice(2, 3);
+    }else {
+        // 如果是1位数，直接使用
+        var firstPart = formattedDays;
+        var secondPart = '';
+    }
+    // 转换函数
+    function convertToCustomFormat(num) {
+        return mapping[num];
+    }
+    
+    // 应用转换
+    firstPart = convertToCustomFormat(firstPart);
+    secondPart = convertToCustomFormat(secondPart);
+    formattedHours = convertToCustomFormat(formattedHours);
+    formattedMinutes = convertToCustomFormat(formattedMinutes);
+    formattedSeconds = convertToCustomFormat(formattedSeconds);
+
+    // 显示结果
+    document.getElementById("countdown").innerHTML = firstPart + " " + secondPart + " 天<br> " + formattedHours + " 小时<br>" +
+        formattedMinutes + " 分钟<br> " + formattedSeconds + " 秒<br> ";
+    
+    
+    
+    // 如果倒计时结束，显示一个消息
+    if (distance < 0) {
+        clearInterval(interval);
+        document.getElementById("countdown").innerHTML = "嗷呜！高考要开始啦！加油喔！你永远是最棒的！";
+    }
+}
+
+// 每秒更新一次倒计时
+var interval = setInterval(updateCountdown, 1000);
+</script>
+</head>
+<body>
+<h1>嗷呜！高考倒计时</h1>
+<div id="countdown"></div>
+</body>
+</html>
